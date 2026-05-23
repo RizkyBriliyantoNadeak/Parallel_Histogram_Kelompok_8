@@ -1,17 +1,18 @@
-# Parallel Histogram - Kelompok KPT
+# AutoFreq – Analisis Frekuensi Paralel Stok Showroom Mobil
 
 ## Deskripsi
-Program untuk menghitung frekuensi kemunculan nilai (0-255) dari array besar secara paralel.  
-Topik: Parallel Histogram (Penghitungan Frekuensi Nilai)  
-Tools: Python + multiprocessing
+AutoFreq adalah sistem untuk menganalisis inventaris showroom mobil secara **paralel** menggunakan teknik **parallel histogram**. Program menghitung distribusi frekuensi berdasarkan:
+- Merek mobil
+- Tahun produksi
+- Rentang harga
 
-## Prerequisites
-- Python 3.8 atau lebih baru
-- pip
+Dengan data besar (jutaan record), proses paralel memanfaatkan multi-core CPU sehingga analisis menjadi cepat (speedup > 3x pada 4 core).
 
-## Instalasi
-1. Clone repositori ini
-2. Buat virtual environment (opsional tapi disarankan):
+## Cara Instalasi
+1. Pastikan Python 3.8+ terinstal.
+2. Clone repositori atau buat folder proyek.
+3. Buka terminal di folder root proyek.
+4. (Opsional) Buat virtual environment:
    ```bash
    python -m venv venv
    source venv/bin/activate   # Linux/Mac

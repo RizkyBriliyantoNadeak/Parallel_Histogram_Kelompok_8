@@ -1,28 +1,25 @@
-# tests/test_edge_cases.py
-# Test kasus batas yang lebih ekstrim
-
-import pytest
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+import pytest
 
-from parallel_histogram import parallel_histogram
-from sequential_histogram import sequential_histogram
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-def test_very_large_data():
-    # Hati-hati dengan memori: gunakan data 10 juta
-    data = [0] * 10_000_000 + [255] * 10_000_000
-    seq = sequential_histogram(data)
-    par = parallel_histogram(data, n_workers=4)
+from src.parallel_analyzer import parallel_analyze
+from src.sequential_analyzer import sequential_analyze
+from src.utils import CAR_BRANDS, YEARS
+
+def test_out_of_range_price():
+    data = [("Toyota", 2020, 1200)]
+    seq = sequential_analyze(data)
+    par = parallel_analyze(data, n_workers=2)
     assert seq == par
-    assert seq[0] == 10_000_000
-    assert seq[255] == 10_000_000
+    # bin terakhir (500-1000) seharusnya dapat 1
+    assert seq[2][-1] == 1
 
-def test_num_bins_custom():
-    data = [0,1,2,3,0,1]
-    # Bins = 4
-    seq = sequential_histogram(data, num_bins=4)
-    par = parallel_histogram(data, num_bins=4, n_workers=2)
+def test_all_same_brand():
+    data = [("Honda", 2022, 250)] * 1000
+    seq = sequential_analyze(data)
+    par = parallel_analyze(data, n_workers=4)
     assert seq == par
-    assert seq[0] == 2
-    assert seq[3] == 1
+    assert seq[0][CAR_BRANDS.index("Honda")] == 1000
+    assert seq[1][YEARS.index(2022)] == 1000
